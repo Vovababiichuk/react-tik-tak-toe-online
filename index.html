@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+      <script
+         src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+         crossorigin
+      ></script>
+      <!-- ! Превращение JSX в реакт елемент -->
+      <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+      <title>Document</title>
+   </head>
+   <body>
+      <div id="root"></div>
+
+      <script type="text/babel">
+
+
+         const SYMBOL_X = 'X';
+         const SYMBOL_O = 'O';
+
+         function App() {
+            const cells = [SYMBOL_O, null, SYMBOL_X, SYMBOL_O, SYMBOL_X, SYMBOL_O, null, null, null];
+
+            const currentStep = SYMBOL_O;
+
+            const getSymbolClassName = (item) => {
+               if (item === SYMBOL_O) return 'symbol--o';
+               if (item === SYMBOL_X) return 'symbol--x';
+               return '';
+            }
+
+            //! ф-ї які повертають JSX не являються компонентами і зазвичай називають render
+            const renderSymbol = (item) => {
+               return <span className={`symbol ${getSymbolClassName(item)}`}>{item}</span>
+            }
+
+            return (
+               <div className='game'>
+                  <div className='game-info'>
+                     Move: {renderSymbol(currentStep)}
+                  </div>
+                  <div className='game-field board'>
+                     {cells.map((item, index) => {
+                        return <button key={index} className='cell'>{item ? renderSymbol(item) : null}</button>
+                     })}
+                  </div>
+               </div>
+            );
+         }
+
+         const root = ReactDOM.createRoot(document.getElementById('root'));
+
+         root.render(<App />);
+      </script>
+
+      <style>
+         body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #242730;
+            color: white;
+         }
+
+         .symbol--x {
+            color: red;
+         }
+
+         .symbol--o {
+            color: green;
+         }
+
+         .cell--win {
+            background-color: rgb(255, 189, 108);
+         }
+
+
+
+         h1 {
+            text-align: center;
+         }
+
+         .board {
+            display: grid;
+            grid-template-columns: 100px 100px 100px;
+            grid-template-rows: 100px 100px 100px;
+            cursor: pointer;
+            position: relative;
+         }
+
+         .tile {
+            color: currentColor;
+            font-size: 2em;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+         }
+
+         .right-border {
+            border-right: 0.2em solid #0074a6;
+         }
+
+         .bottom-border {
+            border-bottom: 0.2em solid #0074a6;
+         }
+
+         .x-hover:hover::after {
+            content: 'X';
+            opacity: 0.4;
+         }
+
+         .o-hover:hover::after {
+            content: 'O';
+            opacity: 0.4;
+         }
+
+         .strike {
+            position: absolute;
+            background-color: darkorange;
+         }
+
+         .strike-row-1 {
+            width: 100%;
+            height: 4px;
+            top: 15%;
+         }
+         .strike-row-2 {
+            width: 100%;
+            height: 4px;
+            top: 48%;
+         }
+         .strike-row-3 {
+            width: 100%;
+            height: 4px;
+            top: 83%;
+         }
+         .strike-column-1 {
+            height: 100%;
+            width: 4px;
+            left: 15%;
+         }
+         .strike-column-2 {
+            height: 100%;
+            width: 4px;
+            left: 48%;
+         }
+         .strike-column-3 {
+            height: 100%;
+            width: 4px;
+            left: 83%;
+         }
+         .strike-diagonal-1 {
+            width: 90%;
+            height: 4px;
+            top: 50%;
+            left: 5%;
+            transform: skewY(45deg);
+         }
+         .strike-diagonal-2 {
+            width: 90%;
+            height: 4px;
+            top: 50%;
+            left: 5%;
+            transform: skewY(-45deg);
+         }
+
+         .game-over {
+            text-align: center;
+            border: #5468ff 8px;
+            border-style: dotted;
+            padding: 10px;
+            margin-top: 50px;
+            font-size: 1.5em;
+         }
+
+         .reset-button {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #0074a6;
+            color: white;
+            width: 100%;
+            font-size: 1.5em;
+         }
+      </style>
+   </body>
+</html>
